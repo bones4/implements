@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 public class EmMapperProxy<T> implements InvocationHandler {
     private final EmSqlSession sqlSession;
     private final Class<T> mappperInterface;
-
+    final  String name="EmMapperProxy";
     public  EmMapperProxy(EmSqlSession sqlSession, Class<T> mappperInterface) {
         this.sqlSession = sqlSession;
         this.mappperInterface = mappperInterface;
@@ -23,12 +23,24 @@ public class EmMapperProxy<T> implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        EmMapperRegistory.MapperData mapperData = sqlSession.getEmConfiguration()
-                .getMapperRegistory().get(method.getDeclaringClass().getName() + "." + method.getName());
+
+        EmMapperRegistory emMapperRegistory= sqlSession.getEmConfiguration()
+                .getMapperRegistory();
+
+        String methodName=method.getDeclaringClass().getName() + "." + method.getName();
+        EmMapperRegistory.MapperData mapperData = emMapperRegistory.get(methodName);
+
         if (mapperData != null) {
-            System.out.println(String.format("SQL [ %s ], parameter [%s] ", mapperData.getSql(), args[0]));
+            System.out.println(
+                    String.format("SQL [ %s ], parameter [%s] ",
+                    mapperData.getSql(), args[0])
+            );
             return sqlSession.selectOne(mapperData, String.valueOf(args[0]));
         }
-        return method.invoke(proxy, args);
+        else {
+
+        }
+       // return method.invoke(proxy, args);
+        return null;
     }
 }

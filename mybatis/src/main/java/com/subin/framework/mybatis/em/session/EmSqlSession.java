@@ -5,6 +5,8 @@ import com.subin.framework.mybatis.em.config.EmMapperRegistory;
 import com.subin.framework.mybatis.em.executor.Executor;
 import com.subin.framework.mybatis.em.mapper.EmMapperProxy;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.lang.reflect.Proxy;
 
 /**
@@ -26,9 +28,19 @@ public class EmSqlSession {
         this.executor = executor;
     }
 
+
+    //Class<T> + Proxy.newProxyInstance+  invocationHandler
     public <T> T getMapper(Class<T> clazz) {
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
-                new Class[]{clazz},new EmMapperProxy(this,clazz));
+//        newProxyInstance(ClassLoader loader,
+//                Class<?>[] interfaces,
+//                InvocationHandler h)
+        ClassLoader loader= clazz.getClassLoader();
+        Class<?>[] interfaces=new Class[]{clazz};
+        InvocationHandler invocationHandler= new EmMapperProxy(this,clazz);
+        return (T) Proxy.newProxyInstance(
+                loader,
+                interfaces,
+                invocationHandler);
     }
 
     public <T> T selectOne(EmMapperRegistory.MapperData mapperData, Object parameter) throws Exception {

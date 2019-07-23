@@ -15,6 +15,7 @@ public class SimpleExecutor implements Executor {
 
     public SimpleExecutor(EmConfiguration configuration) {
         this.configuration = configuration;
+
     }
 
     public EmConfiguration getConfiguration() {

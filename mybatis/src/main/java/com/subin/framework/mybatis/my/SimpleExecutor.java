@@ -20,6 +20,7 @@ public class SimpleExecutor implements Executor {
             while (resultSet.next()) {
                 test.setId(resultSet.getInt(1));
                 test.setName(resultSet.getString(2));
+
             }
             return (E) test;
         } catch (SQLException e) {
@@ -31,11 +32,12 @@ public class SimpleExecutor implements Executor {
 
     public Connection getConnection() throws SQLException {
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/em?useUnicode=true&characterEncoding=utf-8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3308/em?useUnicode=true&characterEncoding=utf-8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String username = "root";
-        String password = "123456";
+        String password = "admin@123#";
         Connection connection = null;
         try {
+            //
             Class.forName(driver);
             connection = DriverManager.getConnection(url, username, password);
         } catch (Exception e) {

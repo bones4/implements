@@ -25,9 +25,18 @@ public class EmConfiguration {
         if (scanPath == null || scanPath.length() < 1) {
             throw new RuntimeException("scan path is required.");
         }
+        mapperRegistory.MapperRegistory();
     }
 
     public static void main(String[] args) throws IOException{
         new EmConfiguration().scanPath("com/subin/framework/mybatis/em/config/mappers").build();
+    }
+
+    public void setScanPath(String scanPath) {
+        this.scanPath = scanPath;
+    }
+
+    public EmMapperRegistory getMapperRegistory() {
+        return mapperRegistory;
     }
 }
